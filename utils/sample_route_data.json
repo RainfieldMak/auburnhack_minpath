@@ -1,0 +1,7 @@
+{
+    "start":{"lat": 33.5185892, "lng": -86.8103567, "placeName": "Birmingham"},
+    "end":{"lat": 33.5006069, "lng": -86.79632409999999, "placeName": "Five Points South"},
+    "waypoint":[{"lat": 33.5027612, "lng": -86.80379599999999, "placeName": "UAB Heersink School of Medicine"}, {"lat": 33.5045338, "lng": -86.7999377, "placeName": "Univ Alabama At Birmingham"}, {"lat": 33.498228, "lng": -86.8067414, "placeName": "INTO UAB Center"}, {"lat": 33.5042196, "lng": -86.79916709999999, "placeName": "Hilton Birmingham Downtown at UAB"}]
+
+
+}
