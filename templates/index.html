@@ -1,42 +1,77 @@
+<!DOCTYPE html>
 <html>
-   <head>
-      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src=".././static/test.js"></script>
-   </head>
+<head>
+    <title>Route Planner</title>
+</head>
+<body>
+    <h1>Route Planner</h1>
+    <form method="POST" action="{{ url_for('submit') }}">
+        <label for="start">Start:</label>
+        <input type="text" id="start" name="start" required><br><br>
 
+        <label for="end">End:</label>
+        <input type="text" id="end" name="end" required><br><br>
 
-   <body>
-      <h1>Test 2</h1>
+        <fieldset>
+            <legend>Waypoints:</legend>
+            <div id="waypoints-container">
+                <div class="waypoint">
+                    <label for="waypoint-1">Waypoint 1:</label>
+                    <input type="text" id="waypoint-1" name="waypoints[]" required>
+                    <button type="button" class="remove-waypoint">Remove</button>
+                </div>
+            </div>
+            <button type="button" id="add-waypoint">Add Waypoint</button>
+        </fieldset>
 
-     
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
 
-        
+    <script>
+        let nextWaypointNum = 2;
 
-         <div class="field_wrapper">
+        const addWaypointButton = document.getElementById('add-waypoint');
+        const waypointsContainer = document.getElementById('waypoints-container');
 
-         <label for="start">Starting Point</label>
-         <input type="text" id="start" name="field_name[]" value=""/> <br>
+        addWaypointButton.addEventListener('click', () => {
+            const newWaypoint = document.createElement('div');
+            newWaypoint.className = 'waypoint';
 
+            const newWaypointLabel = document.createElement('label');
+            newWaypointLabel.textContent = `Waypoint ${nextWaypointNum}:`;
 
-         <label for="end">Destination</label>
-         <input type="text" id="end" name="field_name[]" value=""/> <br>
+            const newWaypointInput = document.createElement('input');
+            newWaypointInput.type = 'text';
+            newWaypointInput.id = `waypoint-${nextWaypointNum}`;
+            newWaypointInput.name = 'waypoints[]';
+            newWaypointInput.required = true;
 
+            const removeWaypointButton = document.createElement('button');
+            removeWaypointButton.type = 'button';
+            removeWaypointButton.className = 'remove-waypoint';
+            removeWaypointButton.textContent = 'Remove';
 
+            removeWaypointButton.addEventListener('click', () => {
+                newWaypoint.remove();
+            });
 
-         <label for="waypoint">Waypoint</label>
-         <input type="text"  name="field_name[]" value=""/>
-         <a href="javascript:void(0);" class="add_field_btn" title="Add field"> add</a>
+            newWaypoint.appendChild(newWaypointLabel);
+            newWaypoint.appendChild(newWaypointInput);
+            newWaypoint.appendChild(removeWaypointButton);
 
-         </div>
-         <br>
-        
-      
-      
-       <button id="sub_btn1">Submit</button>
+            waypointsContainer.appendChild(newWaypoint);
 
-      
-      
+            nextWaypointNum++;
+        });
 
-
-   </body>
+        const removeWaypointButtons = document.querySelectorAll('.remove-waypoint');
+        removeWaypointButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const waypoint = button.parentElement;
+                waypoint.remove();
+            });
+        });
+    </script>
+</body>
 </html>
