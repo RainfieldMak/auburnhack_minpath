@@ -11,7 +11,7 @@ class place_api:
 
         result_list=[]
         # url variable store url
-        url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
 
         query=query
         radius=radius
@@ -24,14 +24,14 @@ class place_api:
         #store as json
         datum= r.json()
 
-        temp = datum['results']
+        temp = datum["results"]
         
 
         # keep looping upto length of y
-      #  for i in range(len(temp)):
-           # result.append(temp[i]['name'])
-            #result_dict[temp[i]['name']]=[temp[i]['geometry']['location']['lat'],temp[i]['geometry']['location']['lng']]
-       #     temp_dict={"lat":temp[i]['geometry']['location']['lat'], "lng":temp[i]['geometry']['location']['lng'], "placeName":temp[i]['name']}
+      #  for i in range(len(temp)):s
+           # result.append(temp[i]["name"])
+            #result_dict[temp[i]["name"]]=[temp[i]["geometry"]["location"]["lat"],temp[i]["geometry"]["location"]["lng"]]
+       #     temp_dict={"lat":temp[i]["geometry"]["location"]["lat"], "lng":temp[i]["geometry"]["location"]["lng"], "placeName":temp[i]["name"]}
         #    result_list.append(temp_dict)
         
         #result=json.dumps(result_list)
@@ -39,13 +39,13 @@ class place_api:
 
 
         
-        return {"lat":temp[0]['geometry']['location']['lat'], "lng":temp[0]['geometry']['location']['lng'], "placeName":temp[0]['name']}
+        return {"lat":temp[0]["geometry"]["location"]["lat"], "lng":temp[0]["geometry"]["location"]["lng"], "placeName":temp[0]["name"]}
 
 
     # take an input list and return  a string object which contain the start , end , waypoint 
     #example 
-    #input_list: ['uab', 'HKU','orlando disney']
-    #output (str):
+    #input_list: ["uab", "HKU","orlando disney"]
+    #output: dict
    # {"start": {"lat": 33.5020323, "lng": -86.80574949999999, "placeName": "University of Alabama at Birmingham"}, 
     # "end": {"lat": 22.2830891, "lng": 114.1365621, "placeName": "The University of Hong Kong"}, 
     # "waypoint": [{"lat": 28.3705684, "lng": -81.51935879999999, "placeName": "Disney Springs"}]}
@@ -64,15 +64,15 @@ class place_api:
 
             for i in  range(len(input_list)):
                 
-                #result_dict['start']
+                #result_dict["start"]
                 if (i==0):
-                    result_dict['start']= self.text_searh_api_call(input_list[i], api_key, radius)
+                    result_dict["start"]= self.text_searh_api_call(input_list[i], api_key, radius)
 
-                #result_dict['end']
+                #result_dict["end"]
                 elif ( i==1): 
-                     result_dict['end']= self.text_searh_api_call(input_list[i], api_key, radius)
+                     result_dict["end"]= self.text_searh_api_call(input_list[i], api_key, radius)
 
-                #result_dict['end']
+                #result_dict["end"]
                 elif(i>1 and i < 11):
                      waypoint_list.append(self.text_searh_api_call(input_list[i], api_key, radius))
                 else:
@@ -80,17 +80,17 @@ class place_api:
                     break
 
             #get list for waypoint        
-            result_dict['waypoint']= waypoint_list 
+            result_dict["waypoint"]= waypoint_list 
 
 
-        #return  a string object that contains the JSON-formatted data,      
-        return json.dumps(result_dict)
+        #return  a dict    
+        return result_dict
     
 
 if __name__ == "__main__":
 
     
-    query_list=['uab', 'HKU','orlando disney']
+    query_list=["uab", "HKU","orlando disney"]
     print ("Api : key")
     api_key = input()
     print( query_list)
