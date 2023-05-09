@@ -1,0 +1,10 @@
+
+	<select id="time-range" name="time-range" >
+    {% if required %}
+	  {% for hour in range(0, 24) %}
+	    {% for minute in ['00', '30'] %}
+	      <option value="{{ '%02d%s' % (hour, minute) }}">{{ '%02d:%s' % (hour, minute) }}</option>
+	    {% endfor %}
+	  {% endfor %}
+    {%endif %}
+	</select>
