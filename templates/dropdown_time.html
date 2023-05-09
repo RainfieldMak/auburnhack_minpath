@@ -1,5 +1,8 @@
 
+
+
 	<select id="time-range" name="time-range" >
+
     {% if required %}
 	  {% for hour in range(0, 24) %}
 	    {% for minute in ['00', '30'] %}
@@ -7,4 +10,6 @@
 	    {% endfor %}
 	  {% endfor %}
     {%endif %}
+
 	</select>
+
