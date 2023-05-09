@@ -1,5 +1,5 @@
 from utils import event
-
+#import event
 
 
 class schedule: 
@@ -26,10 +26,7 @@ class schedule:
         self.start= event.Event(result['start']["placeName"],time_list[0])
         self.end= event.Event(result['end']["placeName"],time_list[1])
 
-
-        print(result["waypoint"][0]["placeName"])
-        print(time_list[2])
-        print (len(result["waypoint"]))
+      
         if result["waypoint"] is not None:
             while (i< len(result["waypoint"])):
                 waypoints.append( event.Event(result["waypoint"][i]["placeName"], time_list[i+2]))
@@ -40,23 +37,25 @@ class schedule:
         self.waypoint= waypoints
 
     def get_start(self):
-        return self.start.to_string()
+        return self.start
 
         
     def get_end(self):
-        return self.end.to_string()
+        return self.end
     
     def get_waypoints(self):
 
-        output=""
+        
         if self.waypoint is not None:
-            for item  in self.waypoint:
-                output+= item.to_string() + " "
+            
 
-            return output
+            return self.waypoint
         else:
             return None
 
+
+
+  
 
 
     
@@ -71,6 +70,6 @@ if __name__ == "__main__":
 
 
     s=schedule(test1,time_list)
-    print(s.get_start())
-    print(s.get_end())
+    print(s.get_start().to_string())
+    print(s.get_end().to_string())
     print(s.get_waypoints())
