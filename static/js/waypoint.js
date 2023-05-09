@@ -7,6 +7,8 @@ async function initMap() {
     //;const place_point= await fetch("../json_funtion_test/sample_route_data.json")
 
   let place_point;
+
+  // replace html  code to normal code for json parsing
   let temp= locations_list.replaceAll('&#39;', '"');
   let temp2= temp.replaceAll('&#34;', "");
 
@@ -105,51 +107,64 @@ async function initMap() {
         summaryPanel.innerHTML = "";
   
 
-        var temp_content;
+       // var temp_content;
+
+       let post_data=new Map();
+       post_data.set("start", place_point["start"]["placeName"]);
+
+       console.log("route leg");
+       console.log( route.legs.length);
+     
+        if (route.legs.length==1){
+          summaryPanel.innerHTML =place_point["start"]["placeName"] + " to ";
+          summaryPanel.innerHTML+=place_point["end"]["placeName"] +  "<br>";
+          summaryPanel.innerHTML += route.legs[0].duration.text + "<br>";
+          summaryPanel.innerHTML += route.legs[0].distance.text + "<br><br>";
+        }
+
         // For each route, display summary information.
-        for (let i = 0; i < route.legs.length; i++) {
-          const routeSegment = i + 1;
-          temp_content+= route.legs[i].duration.text ;
-          console.log(route.legs[i].duration.text );
-  
-          summaryPanel.innerHTML +=
-            "<b>Route Segment: " + routeSegment + "</b><br>";
-         // summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-          //summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-          //summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
-          //summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-
-            if (routeSegment == 1){
-                summaryPanel.innerHTML += place_point["start"]["placeName"] + " to ";
-                summaryPanel.innerHTML += wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
-                summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
-                summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-            }
-
-           else if (routeSegment == route.legs.length){
-                console.log("final leg")
-                summaryPanel.innerHTML += wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
-                summaryPanel.innerHTML +=  place_point["end"]["placeName"] +  "<br>";
-                summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
-                summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-                
-            }else{
-
-                
-                summaryPanel.innerHTML +=wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
-                summaryPanel.innerHTML +=wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
-                summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
-                summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-                
+        else{
+          for (let i = 0; i < route.legs.length; i++) {
+            const routeSegment = i + 1;
+        
+            post_data.set(i ,[,route.legs[i].duration.text,route.legs[i].distance.text ]);
+            summaryPanel.innerHTML +=
+              "<b>Route Segment: " + routeSegment + "</b><br>";
 
 
-            }
-          
-          //contents = summaryPanel.innerHTML.innerHTML;
-          //fwrite(file, contents);
-       }
+              if (routeSegment == 1){
+                  summaryPanel.innerHTML += place_point["start"]["placeName"] + " to ";
+                  summaryPanel.innerHTML += wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
+                  summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
+                  summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+              }
 
-       console.log(temp_content);
+            else if (routeSegment == route.legs.length){
+                  console.log("final leg")
+                  summaryPanel.innerHTML += wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
+                  summaryPanel.innerHTML +=  place_point["end"]["placeName"] +  "<br>";
+                  summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
+                  summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                  
+              }else{
+
+                  
+                  summaryPanel.innerHTML +=wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
+                  summaryPanel.innerHTML +=wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
+                  summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
+                  summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                  
+
+
+              }
+            
+            //contents = summaryPanel.innerHTML.innerHTML;
+            //fwrite(file, contents);
+        }
+      }
+       post_data.set("end", place_point["end"]["placeName"]);
+
+       console.log(JSON.stringify(Object.fromEntries(post_data)));
   
       })
 
