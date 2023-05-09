@@ -4,20 +4,62 @@
     <title>Route Planner</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+             {% endfor %}
+             </ul>
+        {% endif %}
+    {% endwith %}
     <h1>Route Planner</h1>
     <form method="POST" action="{{ url_for('submit') }}">
+
         <label for="start">Start:</label>
-        <input type="text" id="start" name="start" required><br><br>
+        <input type="text" id="start" name="start" required>
+        <label for="s_s_time">Start Time:</label>
+        {%with  required = true %}
+            {% include 'dropdown_time.html'%}
+        {% endwith %}
+
+
+        <label for="s_e_time">End Time:</label>
+        {%with  required = true %}
+            {% include 'dropdown_time.html'%}
+        {% endwith %}
+        
+        <br><br>
 
         <label for="end">End:</label>
-        <input type="text" id="end" name="end" required><br><br>
+        <input type="text" id="end" name="end" required>
+        <label for="e_s_time">Start Time:</label>
+        {%with  required = true %}
+            {% include 'dropdown_time.html'  %}
+
+        {% endwith %}
+        <label for="e_e_time">End Time:</label>
+        {%with  required = true %}
+            {% include 'dropdown_time.html'  %}
+        {% endwith %}
+        <br><br>
 
         <fieldset>
             <legend>Waypoints:</legend>
             <div id="waypoints-container">
                 <div class="waypoint">
                     <label for="waypoint-1">Waypoint 1:</label>
-                    <input type="text" id="waypoint-1" name="waypoints[]" required>
+                    <input type="text" id="waypoint-1" name="waypoints[]" >
+                    <label for="w_s_time[]" >Start Time:</label>
+                        {%with  required = true %}
+                            {% include 'dropdown_time.html'  %}
+                         {% endwith %}
+                 
+                    <label for="w_e_time[]">End Time:</label>
+                        {%with  required = true %}
+                            {% include 'dropdown_time.html'  %}
+                         {% endwith %}
+           
                     <button type="button" class="remove-waypoint">Remove</button>
                 </div>
             </div>
