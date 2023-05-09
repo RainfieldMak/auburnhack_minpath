@@ -74,7 +74,12 @@ class place_api:
 
                 #result_dict["end"]
                 elif(i>1 and i < 11):
-                     waypoint_list.append(self.text_searh_api_call(input_list[i], api_key, radius))
+                     
+                     #no waypoint case
+                     if len(input_list[i])==0:
+                         break
+                     else:
+                        waypoint_list.append(self.text_searh_api_call(input_list[i], api_key, radius))
                 else:
                     sys.stderr.write("Error: Invalid <i> , <i>  > 11 or <i> < 1?\n")
                     break
