@@ -36,7 +36,7 @@ def submit():
     print(time_list)
 
     #make the start and end time into a tuple and store into a new list
-    new_time= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
+    #new_time= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
 
     while i < len(time_list) -1:
 
@@ -58,7 +58,7 @@ def submit():
 
     
 
-    return redirect(url_for("show_locations", result=result , time_list=new_time))
+    return redirect(url_for("show_locations", result=result , time_list=time_list))
 
 @app.route("/show_locations", methods=["POST", "GET"])
 def show_locations():
@@ -68,18 +68,23 @@ def show_locations():
     time_list = request.args.getlist ("time_list")
 
 
+    #make the start and end time into a tuple and store into a new list
+    new_time= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
+
+
     #convert result(string) to dict 
     dict_result = ast.literal_eval(result)
     print(type (dict_result))
     print (dict_result) 
+    print(new_time)
 
     
-    itneray=schedule.schedule(dict_result, time_list)
+    itneray=schedule.schedule(dict_result, new_time)
 
     #sanity check
-    print (itneray.get_start())
-    print (itneray.get_end())
-    print (itneray.get_waypoints())
+    print (itneray.get_start().to_string())
+    print (itneray.get_end().to_string())
+    #print (itneray.get_waypoints())
 
 
 
