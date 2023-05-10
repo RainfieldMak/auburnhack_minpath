@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template,redirect,url_for,session,flash
+from flask import Flask, request, jsonify, render_template,redirect,url_for,session,flash,sessions
 from utils import text_search , schedule, event
 import json
 import ast
@@ -69,22 +69,32 @@ def show_locations():
 
 
     #make the start and end time into a tuple and store into a new list
-    new_time= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
+    new_time_list= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
+
+    #convert it into dict , the correct format use in schedule object 
+    new_time_dict = {"start":new_time_list[0] , "end": new_time_list[1], "waypoint": new_time_list[2::]}
 
 
     #convert result(string) to dict 
-    dict_result = ast.literal_eval(result)
-    print(type (dict_result))
-    print (dict_result) 
-    print(new_time)
+    place_dict = ast.literal_eval(result)
+    print(type (place_dict))
+    print (place_dict) 
+    print( new_time_dict)
 
-    
-    itneray=schedule.schedule(dict_result, new_time)
+
+    #save into session data
+    session["place_list"]=place_dict
+    session["time_list"]=  new_time_dict
+
+
+    #delay converting !!! 10 May , so to pass to html and then create itneray     
+    itneray=schedule.schedule(place_dict,  new_time_dict)
 
     #sanity check
     print (itneray.get_start().to_string())
     print (itneray.get_end().to_string())
-    #print (itneray.get_waypoints())
+    for e in itneray.get_waypoints():
+        print(e.to_string())
 
 
 

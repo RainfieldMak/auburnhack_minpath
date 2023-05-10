@@ -7,12 +7,19 @@ class Event:
         #place: string , name of place
         #time : tuple, e.g. [star_time , end_time], where start_time and end_time is in string , 24 hour format e.g. 2300
         #half_hour_span: string , total no of half hour between start_time and end_time.
+        #waypoint_order : integer , the order of waypoint , 0th base
         self.place=place
         self.start_time=time[0]
         self.end_time=time[1]
         self.half_hour_span= self.calculate_half_hours(self.get_start(), self.get_end_time())
+        self.waypoint_order=0
         
 
+    def set_waypoint_order(self, order):
+        self.waypoint_order= order
+
+    def get_waypoint_order(self):
+        return self.waypoint_order
 
     def get_place(self):
         return self.place
@@ -27,7 +34,7 @@ class Event:
         return self.half_hour_span
     
     def to_string(self):
-        return self.get_place() +" "+ self.get_start()+" " + self.get_end_time() + " " + self.get_half_hour_span()
+        return self.get_place() +" "+ self.get_start()+" " + self.get_end_time() + " " + self.get_half_hour_span() + " " + str (self.get_waypoint_order())
     
 
     #caculate how many half hour in between start and end time
