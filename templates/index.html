@@ -89,6 +89,28 @@
             newWaypointInput.name = 'waypoints[]';
             newWaypointInput.required = true;
 
+            const newStartTimeLabel = document.createElement('label');
+            newStartTimeLabel.textContent = 'Start Time: ';
+
+            const newStartTimeDropdown = document.createElement('select');
+            newStartTimeDropdown.id = `w_s_time[]`;
+            newStartTimeDropdown.name = `w_s_time[]`;
+            newStartTimeDropdown.required = true;
+            newStartTimeDropdown.innerHTML = `{%with  required = true %}
+                            {% include 'dropdown_time.html'  %}
+                         {% endwith %}`;
+
+            const newEndTimeLabel = document.createElement('label');
+            newEndTimeLabel.textContent = 'End Time: ';
+
+            const newEndTimeDropdown = document.createElement('select');
+            newEndTimeDropdown.id = `w_e_time[]`;
+            newEndTimeDropdown.name = `w_e_time[]`;
+            newEndTimeDropdown.required = true;
+            newEndTimeDropdown.innerHTML = `{%with  required = true %}
+                            {% include 'dropdown_time.html'  %}
+                         {% endwith %}`;
+
             const removeWaypointButton = document.createElement('button');
             removeWaypointButton.type = 'button';
             removeWaypointButton.className = 'remove-waypoint';
@@ -96,16 +118,21 @@
 
             removeWaypointButton.addEventListener('click', () => {
                 newWaypoint.remove();
-            });
+    });
 
-            newWaypoint.appendChild(newWaypointLabel);
-            newWaypoint.appendChild(newWaypointInput);
-            newWaypoint.appendChild(removeWaypointButton);
+    newWaypoint.appendChild(newWaypointLabel);
+    newWaypoint.appendChild(newWaypointInput);
+    newWaypoint.appendChild(newStartTimeLabel);
+    newWaypoint.appendChild(newStartTimeDropdown);
+    newWaypoint.appendChild(newEndTimeLabel);
+    newWaypoint.appendChild(newEndTimeDropdown);
+    newWaypoint.appendChild(removeWaypointButton);
 
-            waypointsContainer.appendChild(newWaypoint);
+    waypointsContainer.appendChild(newWaypoint);
 
-            nextWaypointNum++;
-        });
+    nextWaypointNum++;
+});
+
 
         const removeWaypointButtons = document.querySelectorAll('.remove-waypoint');
         removeWaypointButtons.forEach(button => {
