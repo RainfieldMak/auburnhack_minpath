@@ -71,10 +71,8 @@ async function initMap() {
     console.log(end);
     
 
-    // open file for dropping down time for each leg route
     
-
-  
+ 
     for (let i = 0; i < waypoints.length; i++) {
       
         waypts.push({
@@ -110,7 +108,7 @@ async function initMap() {
        // var temp_content;
 
        let post_data=new Map();
-       post_data.set("start", place_point["start"]["placeName"]);
+       post_data.set("0", [place_point["start"]["placeName"], route.legs[0].duration.text,route.legs[0].distance.text] );
 
        console.log("route leg");
        console.log( route.legs.length);
@@ -122,17 +120,19 @@ async function initMap() {
           summaryPanel.innerHTML += route.legs[0].distance.text + "<br><br>";
         }
 
-        // For each route, display summary information.
+        /* For each route, display summary information. */
         else{
           for (let i = 0; i < route.legs.length; i++) {
             const routeSegment = i + 1;
         
-            post_data.set(i ,[,route.legs[i].duration.text,route.legs[i].distance.text ]);
+            
             summaryPanel.innerHTML +=
               "<b>Route Segment: " + routeSegment + "</b><br>";
 
 
               if (routeSegment == 1){
+
+                post_data.set(routeSegment ,[ wp[[route.waypoint_order[i]]]["placeName"]  ,route.legs[i].duration.text,route.legs[i].distance.text ]);
                   summaryPanel.innerHTML += place_point["start"]["placeName"] + " to ";
                   summaryPanel.innerHTML += wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
                   summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
@@ -141,6 +141,8 @@ async function initMap() {
 
             else if (routeSegment == route.legs.length){
                   console.log("final leg")
+                  
+                  post_data.set("final" ,[ place_point["end"]["placeName"]  ,route.legs[i].duration.text,route.legs[i].distance.text ]);
                   summaryPanel.innerHTML += wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
                   summaryPanel.innerHTML +=  place_point["end"]["placeName"] +  "<br>";
                   summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
@@ -148,7 +150,7 @@ async function initMap() {
                   
               }else{
 
-                  
+                post_data.set(routeSegment ,[ wp[[route.waypoint_order[i]]]["placeName"]  ,route.legs[i].duration.text,route.legs[i].distance.text ]);
                   summaryPanel.innerHTML +=wp[[route.waypoint_order[i-1]]]["placeName"] + " to ";
                   summaryPanel.innerHTML +=wp[[route.waypoint_order[i]]]["placeName"] + "<br>";
                   summaryPanel.innerHTML += route.legs[i].duration.text + "<br>";
@@ -158,13 +160,35 @@ async function initMap() {
 
               }
             
-            //contents = summaryPanel.innerHTML.innerHTML;
-            //fwrite(file, contents);
+      
         }
       }
        post_data.set("end", place_point["end"]["placeName"]);
 
        console.log(JSON.stringify(Object.fromEntries(post_data)));
+
+       /*steralize data to json format*/
+       const serializedData = JSON.stringify(Object.fromEntries(post_data));
+
+      
+       console.log(serializedData)
+
+      /* post to flask */
+       $.ajax({
+        url: "/post_waypoint_order",
+        contentType: "application/json",
+        type: 'POST',
+        data: serializedData,
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+        });
+
+
+
   
       })
 

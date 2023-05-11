@@ -54,7 +54,6 @@ def submit():
     result= call.api_text_search_list(name_list, api_key, "50")
     print(result)
 
-   # session["api_search_result"]=result
 
     
 
@@ -88,13 +87,13 @@ def show_locations():
 
 
     #delay converting !!! 10 May , so to pass to html and then create itneray     
-    itneray=schedule.schedule(place_dict,  new_time_dict)
+    #itneray=schedule.schedule(place_dict,  new_time_dict)
 
     #sanity check
-    print (itneray.get_start().to_string())
-    print (itneray.get_end().to_string())
-    for e in itneray.get_waypoints():
-        print(e.to_string())
+    #print (itneray.get_start().to_string())
+    #print (itneray.get_end().to_string())
+    #for e in itneray.get_waypoints():
+    #    print(e.to_string())
 
 
 
@@ -102,6 +101,19 @@ def show_locations():
     result_=json.dumps(result)
     return render_template("result.html", result =result_)
 
+
+
+@app.route ("/post_waypoint_order", methods=["POST"])
+
+def post_waypoint_order():
+
+
+    waypoint_order=request.json
+
+    print ("Waypoint_order from js script")
+    print(waypoint_order)
+
+    return f"success"
 
 
 if __name__ == "__main__":
