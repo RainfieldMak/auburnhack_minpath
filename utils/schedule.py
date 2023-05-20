@@ -5,9 +5,9 @@ from utils import event
 class schedule: 
     def __init__(self,place_list, time_list):
         #place_list : is in a form of dict , example, value for waypoint could be empty list
-            # {"start": {"lat": 33.5020323, "lng": -86.80574949999999, "placeName": "University of Alabama at Birmingham"}, 
-                # "end": {"lat": 22.2830891, "lng": 114.1365621, "placeName": "The University of Hong Kong"}, 
-                # "waypoint": [{"lat": 28.3705684, "lng": -81.51935879999999, "placeName": "Disney Springs"}]}
+            # {'1': ['UAB Hospital', '4 mins', '0.9 km'], '2': ['Hotel Indigo Birmingham Five Points S - Uab, an IHG Hotel', '4 mins', '1.1 km'], 'start': ['University of Alabama at Birmingham', '4 mins', '0.9 km'],
+             # 'final': ['UAB Campus Recreation', '4 mins', '0.9 km'], 
+             # 'end': 'UAB Campus Recreation'}
     
         #time_list : a dict 
             #{"start":["0000", "0100"],"end" :["2300", "2400"] ,"waypoint" : ["1700", "1900"]}
@@ -19,16 +19,20 @@ class schedule:
         
         i=0        
         waypoints=[]
-        self.start= event.Event(place_list['start']["placeName"],time_list['start'])
-        self.end= event.Event(place_list['end']["placeName"],time_list["end"])
+        self.start= event.Event(place_list['start'][0],time_list['start'], -1)
+        self.end= event.Event(place_list['end'],time_list["end"], -1)
 
       
-        if place_list["waypoint"] is not None:
-            while (i< len(place_list["waypoint"])):
-                waypoints.append( event.Event(place_list["waypoint"][i]["placeName"], time_list["waypoint"][i]))
+
+        for key in place_list:
+            if key== "start" or key == "end" or key=='final':
+                continue
+            else :
+                waypoints.append( event.Event(place_list[key][0], time_list["waypoint"][i], i+1))
+                
                 i+=1
-        else:
-            self.waypoint= None
+
+
 
         self.waypoint= waypoints
 
@@ -48,6 +52,19 @@ class schedule:
             return self.waypoint
         else:
             return None
+        
+    def as_dict(self):
+        dict = self.__dict__
+        for key in dict:
+            if key == "waypoint":
+                i=0
+                for item in dict[key]:
+                    dict[key][i]= item.__dict__
+                    i+=1
+            
+            else:
+                dict[key]= dict[key].__dict__
+        return dict
 
 
 
@@ -57,16 +74,19 @@ class schedule:
     
 if __name__ == "__main__":
 
-    test1= {"start": {"lat": 33.5020323, "lng": -86.80574949999999, "placeName": "University of Alabama at Birmingham"}, 
-                 "end": {"lat": 22.2830891, "lng": 114.1365621, "placeName": "The University of Hong Kong"}, 
-                 "waypoint": [{"lat": 28.3705684, "lng": -81.51935879999999, "placeName": "Disney Springs"}, 
-                              {"lat": 28.3705684, "lng": -81.51935879999999, "placeName": "UAB rect"}]}
+    test1= {'1': ['UAB Hospital', '4 mins', '0.9 km'], '2': ['Hotel Indigo Birmingham Five Points S - Uab, an IHG Hotel', '4 mins', '1.1 km'], 'start': ['University of Alabama at Birmingham', '4 mins', '0.9 km'],
+             'final': ['UAB Campus Recreation', '4 mins', '0.9 km'], 
+             'end': 'UAB Campus Recreation'}
     
     time_list={"start":["0000", "0100"],"end" :["2300", "2400"] ,"waypoint" : [["1700", "1900"], ["0400", "0600"]]}
 
 
     s=schedule(test1,time_list)
-    print(s.get_start().to_string())
-    print(s.get_end().to_string())
-    for e in s.get_waypoints():
-        print(e.to_string())
+    temp= s.__dict__
+    print (temp)
+
+    temp_= s.as_dict()
+    print(temp_)
+    print(type (s))
+    e_list=[]
+  
