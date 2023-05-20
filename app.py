@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template,redirect,url_for,sess
 from utils import text_search , schedule, event
 import json
 import ast
-
+import os
 
 app = Flask(__name__)
 
@@ -27,6 +27,8 @@ def submit():
     waypoints = request.form.getlist("waypoints[]")
     name_list=[start] + [end]+ waypoints 
 
+    print(time_list)
+    print(waypoints)
 
     #if nothing being input in the waypoint , delete last two item in list 
     if len(waypoints[0]) == 0:
@@ -35,8 +37,6 @@ def submit():
 
     print(time_list)
 
-    #make the start and end time into a tuple and store into a new list
-    #new_time= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
 
     while i < len(time_list) -1:
 
@@ -69,6 +69,8 @@ def show_locations():
 
     #make the start and end time into a tuple and store into a new list
     new_time_list= [time_list[i:i+2] for i in range(0, len(time_list), 2)]
+
+    print(new_time_list)
 
     #convert it into dict , the correct format use in schedule object 
     new_time_dict = {"start":new_time_list[0] , "end": new_time_list[1], "waypoint": new_time_list[2::]}
@@ -109,11 +111,42 @@ def post_waypoint_order():
 
 
     waypoint_order=request.json
+    print(type(waypoint_order))
+    place_dict=session["place_list"]
+    new_time_dict=session["time_list"]
 
+    #sanity test
     print ("Waypoint_order from js script")
     print(waypoint_order)
+    print ('place dict')
+    print (place_dict)
+    print('new_time_dict')
+    print(new_time_dict)
+
+
+    s= schedule.schedule(waypoint_order,new_time_dict)
+
+
+    #sanity test
+    print (s.as_dict())
 
     return f"success"
+
+
+#not working 
+@app.route('/save-map', methods=['POST'])
+def save_map():
+    # Code to save the map as an image
+    image_data = request.form['image_data']
+    img_data = image_data.split(',')[1]
+    filename = 'map.png'
+    filepath = os.path.join(app.static_folder, 'images', filename)
+    with open(filepath, 'wb') as f:
+        f.write(img_data.decode('base64'))
+    return 'OK'
+
+
+
 
 
 if __name__ == "__main__":
