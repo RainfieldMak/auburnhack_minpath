@@ -2,7 +2,7 @@
 
 class Event:
     
-    def __init__(self, place, time):
+    def __init__(self, place, time,waypoint):
 
         #place: string , name of place
         #time : tuple, e.g. [star_time , end_time], where start_time and end_time is in string , 24 hour format e.g. 2300
@@ -12,7 +12,8 @@ class Event:
         self.start_time=time[0]
         self.end_time=time[1]
         self.half_hour_span= self.calculate_half_hours(self.get_start(), self.get_end_time())
-        self.waypoint_order=0
+        self.waypoint_order=waypoint
+   
         
 
     def set_waypoint_order(self, order):
@@ -32,6 +33,7 @@ class Event:
     
     def get_half_hour_span(self):
         return self.half_hour_span
+
     
     def to_string(self):
         return self.get_place() +" "+ self.get_start()+" " + self.get_end_time() + " " + self.get_half_hour_span() + " " + str (self.get_waypoint_order())
