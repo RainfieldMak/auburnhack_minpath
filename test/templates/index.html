@@ -1,0 +1,73 @@
+<style>
+
+  table {
+    border-collapse: collapse;
+    max-width: 800px;
+    max-height: 600px;
+    overflow: auto;
+  }
+    
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+    
+    td {
+      background-color: #f2f2f2;
+    }
+    
+    #schedule {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 400px;
+        height: 200px;
+        background-color: #f2f2f2;
+        padding: 10px;
+      }
+
+
+  </style>
+  
+  <div id="schedule">
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!--jinjia 2 scope issue , need to use name space , if want to adjust variable in the inner block-->  
+        {% set location_found = namespace() %}
+        {% for hour in range(24) %}
+          {% for minute in [0, 30] %}
+            {% set flag = true %}
+            {% set time = '%02d%02d' % (hour, minute) %}
+            <tr>
+              <td>{{ time }}</td>
+              {% set location_found.found= False %}
+              {% for location in session['locations'] %}
+                {% if location['start_time'] <= time < location['end_time'] %}
+                {% set location_found.found= true %}
+                  {% if location['start_time'] == time %}
+                  <td rowspan="{{ location['half_hour_span'] }}">
+                    <div style="background-color: #008080; color: white; padding: 5px; border-radius: 5px;">
+                      {{ location['place'] }} ({{ location['start_time'] }} - {{ location['end_time'] }})
+                    
+                    </div>
+                  </td>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              {% if not location_found.found %}
+                <td></td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  

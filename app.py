@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 #future recomandation , retrived 
 # from a file or scrip to gnereal long 64bit random key
-app.secret_key = "your-secret-key-hereasdbfwerwdsfsadd"
+app.secret_key = "your-secret-key-hereasdbfwerwd"
 
 @app.route("/")
 def index():
@@ -51,6 +51,7 @@ def submit():
     call=text_search.place_api()
     print("api key: ")
     api_key=input()
+    session['api_key']=api_key
     result= call.api_text_search_list(name_list, api_key, "50")
     print(result)
 
@@ -88,6 +89,11 @@ def show_locations():
     session["time_list"]=  new_time_dict
 
 
+    #get api key
+    api_key=session['api_key']
+    map_link="https://maps.googleapis.com/maps/api/js?key="+api_key+"&callback=initMap&v=weekly"
+
+
     #delay converting !!! 10 May , so to pass to html and then create itneray     
     #itneray=schedule.schedule(place_dict,  new_time_dict)
 
@@ -101,7 +107,7 @@ def show_locations():
 
     #conver to json format
     result_=json.dumps(result)
-    return render_template("result.html", result =result_)
+    return render_template("result.html", result =result_, map_link=map_link)
 
 
 
@@ -126,10 +132,11 @@ def post_waypoint_order():
 
     s= schedule.schedule(waypoint_order,new_time_dict)
 
-
+    locations= s.as_dict()
     #sanity test
-    print (s.as_dict())
-
+    print (locations)
+    session['locations']= locations
+    print(session['locations'])
     return f"success"
 
 

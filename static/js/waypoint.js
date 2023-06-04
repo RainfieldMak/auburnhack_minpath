@@ -108,7 +108,7 @@ async function initMap() {
        // var temp_content;
 
        let post_data=new Map();
-       post_data.set("0", [place_point["start"]["placeName"], route.legs[0].duration.text,route.legs[0].distance.text] );
+       post_data.set("start", [place_point["start"]["placeName"], route.legs[0].duration.text,route.legs[0].distance.text] );
 
        console.log("route leg");
        console.log( route.legs.length);
@@ -188,6 +188,8 @@ async function initMap() {
         });
 
 
+
+        /* pass sth back form flask , possibily scheudle object for creating itneray*/
 
   
       })

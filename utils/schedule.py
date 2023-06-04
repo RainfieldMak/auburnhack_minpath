@@ -2,6 +2,8 @@ from utils import event
 #import event
 
 
+#Note: 1/6/2023 Is it neccessary to make object, since need to convert back to dict and reorder 
+
 class schedule: 
     def __init__(self,place_list, time_list):
         #place_list : is in a form of dict , example, value for waypoint could be empty list
@@ -64,7 +66,16 @@ class schedule:
             
             else:
                 dict[key]= dict[key].__dict__
-        return dict
+
+
+        output=[]
+        output.append(dict['start'])
+        for item in dict['waypoint']:
+            output.append(item)
+
+        output.append(dict['end'])
+
+        return output
 
 
 
