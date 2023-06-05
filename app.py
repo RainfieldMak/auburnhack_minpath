@@ -47,11 +47,13 @@ def submit():
         else:
             i=i+2
 
-    #make api call to google map
+    
     call=text_search.place_api()
-    print("api key: ")
-    api_key=input()
+    
+    api_key=request.form['api-key']
     session['api_key']=api_key
+
+    #make api call to google map
     result= call.api_text_search_list(name_list, api_key, "50")
     print(result)
 
