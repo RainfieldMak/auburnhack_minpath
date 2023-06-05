@@ -9,7 +9,4 @@ To implement a web base itinerary planner using google direction service API to 
 
 
 Usage
-![image](https://github.com/RainfieldMak/auburnhack_minpath/assets/130533588/bbd5c3a5-bae2-46e5-a6d4-14f53c8141c1)
-
-
-![image](https://github.com/RainfieldMak/auburnhack_minpath/assets/130533588/79743cd5-0d52-4bef-81f9-41512b56123b)
+![image](https://github.com/RainfieldMak/auburnhack_minpath/assets/130533588/19ef5cb0-d04b-4617-860e-e474950f6e6a)
