@@ -39,6 +39,7 @@ def submit():
 
 
     while i < len(time_list) -1:
+        
 
         #end time earlier than start time case
         if int (time_list[i])> int (time_list[i+1]):
